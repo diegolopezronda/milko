@@ -34,5 +34,5 @@ This is a list of references I used to learn and implement the project. I took
 the time to enlighten myself through learning paths rather than just reading 
 documentation, and I highly recommend them.
 
-[Build REST APIs with FastAPI](https://www.linkedin.com/learning/build-rest-apis-with-fastapi)
-[Create Machine Learning Models](https://learn.microsoft.com/en-gb/training/paths/create-machine-learn-models/)
+* [Build REST APIs with FastAPI](https://www.linkedin.com/learning/build-rest-apis-with-fastapi)
+* [Create Machine Learning Models](https://learn.microsoft.com/en-gb/training/paths/create-machine-learn-models/)
