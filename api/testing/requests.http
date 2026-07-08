@@ -1,0 +1,34 @@
+### This file exists because  I don't want to open API docs in the browser.
+### I am lazy, it is what it is.
+### So don't consider this a test, but a pre-test.
+
+### VM
+POST http://localhost:8000/vm/start
+Content-Type: application/json
+
+{
+    "cpu_count": 4,
+    "mem_size": 32,
+    "image": "debian:bookworm"
+}
+
+POST http://localhost:8000/vm/1/stop
+Content-Type: application/json
+
+POST http://localhost:8000/vm/start
+Content-Type: application/json
+
+{
+    "cpu_count": 400,
+    "mem_size": 32,
+    "image": "debian:bookworm"
+}
+
+### LOGS
+GET http://localhost:8000/logs?offset=1000&count=20
+
+GET http://localhost:8000/logs?offset=10&count=20
+Accept: text/csv
+
+GET http://localhost:8000/logs?offset=10&count=20
+Accept: application/yaml

@@ -1,0 +1,2 @@
+class EmptyIteratorException(Exception):
+    pass
