@@ -14,11 +14,7 @@ from endpoints.logs.routers import router as logs_router
 async def lifespan(app: FastAPI):
     SQLModel.metadata.create_all(engine)
     yield
-
-# TODO Add actual database connectors (Cosmos)
-# TODO Add authentication (Entra)
-# TODO Add testing
-# TODO Connect to machine learning
+    
 app = FastAPI(
     title="Milko API",
     version="1.0.0",
