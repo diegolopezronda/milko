@@ -12,6 +12,8 @@ as I learn and have time to implement them.
 Below some of the features I will be implementing in the future, and some 
 references I used to learn and implement the project.
 
+Companies outside software world seem to like Azure, so I try to focus the work towards that Cloud offering.
+
 ## To-Do
 
 ### General
