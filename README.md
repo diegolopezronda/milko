@@ -99,6 +99,10 @@ The Milk Quality Predictor is a machine learning model that predicts the quality
 of milk based on its chemical composition. The model is built with scikit-learn 
 and is located in the `milk_quality_predictor` folder.
 
+>If your are here to see the results on your browser at GitHub, you can skip the 
+>whole process and visit [milk-predictions.ipynb](./ml/milk-predictions.ipynb), 
+>which is a Jupyter notebook that shows the model and its >predictions.
+
 #### Requirements
 
 * Python 3.12.0
