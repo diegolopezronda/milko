@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     TENANT_ID: str
     APP_CLIENT_ID: str
+    FRONTEND_SOCKET_URL: str
     class Config:
         env_file = '.env_var'
 
