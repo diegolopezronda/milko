@@ -13,6 +13,7 @@ from endpoints.auth.schemas import azure_scheme
 from endpoints.auth.schemas import settings
 from endpoints.vms.routers import router as vms_router
 from endpoints.logs.routers import router as logs_router
+from endpoints.qa.routers import router as qas_router
 
 
 @asynccontextmanager
@@ -56,3 +57,4 @@ async def empty_iterator_exception_handler(request: Request, exception: EmptyIte
 app.include_router(auths_router)
 app.include_router(vms_router)
 app.include_router(logs_router)
+app.include_router(qas_router)
