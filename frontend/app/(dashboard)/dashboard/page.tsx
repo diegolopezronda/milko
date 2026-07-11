@@ -1,7 +1,6 @@
 import Link from "next/link"
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -11,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button"
 
 export default function Page() {
+
   return (
     <>
       <div className="grid grid-cols-2 gap-4">

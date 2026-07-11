@@ -4,7 +4,7 @@ import "next-auth/jwt"
 import MicrosoftEntraId from "next-auth/providers/microsoft-entra-id"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  debug: true,
+  debug: false,
   theme: { logo: "https://authjs.dev/img/logo-sm.png" },
   providers: [
     MicrosoftEntraId({
@@ -19,12 +19,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const { pathname } = request.nextUrl
       return true
     },
-    jwt({ token, trigger, session, account }) {
-      if (trigger === "update") token.name = session.user.name
+    jwt({ token, profile, trigger, session, account }) {
+      if (trigger === "update"){
+        token.name = session.user.name
+      }
+      if(trigger === "signIn" && profile){
+        token.roles = profile.roles;
+        token.name = profile.name || "";
+        token.email = profile.preferred_username;
+      }
       return token
     },
     async session({ session, token }) {
-      if (token?.accessToken) session.accessToken = token.accessToken
+      if(token){
+        session.roles = token?.roles || [];
+        session.name = token.name;
+        session.email = token?.email || "";
+        session.picture = token.picture;
+        if(token.accessToken) session.accessToken = token.accessToken;
+      }
       return session
     },
   }

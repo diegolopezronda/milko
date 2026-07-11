@@ -61,7 +61,7 @@ Will be available at `http://localhost:8000`.
 The frontend is built with React, and it is the user interface of the project. The frontend is located in the `frontend` folder.
 
 #### Requirements
-* Node.js 20.6.0
+* Node.js >= 20.6.0
 
 #### Installation
 
