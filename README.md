@@ -34,6 +34,7 @@ located in the `api` folder.
 
 ```bash
 cd api
+python3 -m venv .env --prompt "Milko API"
 source .env/bin/activate
 pip install -r requirements.txt
 ```
@@ -113,6 +114,7 @@ and is located in the `milk_quality_predictor` folder.
 
 ```bash
 cd ml
+python3 -m venv .env --prompt "Milko ML"
 source .env/bin/activate
 pip install -r requirements.txt
 ```
