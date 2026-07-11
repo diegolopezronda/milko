@@ -10,7 +10,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     MicrosoftEntraId({
       clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_ID,
       clientSecret:process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET,
-      issuer:"https://login.microsoftonline.com/common/v2.0"
+      issuer:process.env.AUTH_MICROSOFT_ENTRA_ID_ISSUER
     }),
   ],
   session: { strategy: "jwt" },
