@@ -3,16 +3,6 @@ A fictitious dairy company full-stack. The idea is to showcase the latest of
 my abilities in the field of software development, from backend to frontend, 
 including machine learning and cloud computing.
 
-## Apps
-
-### API
-The API is built with FastAPI, and it is the backend of the project. API is 
-located in the `api` folder.
-
-#### Requirements
-
-* Python 3.12.0
-
 #### Microsoft Azure Entra ID authentication
 The API and the backend are protected with Entra ID authentication, so you will 
 need to create an Entra ID application and configure it to allow access to the 
@@ -28,6 +18,15 @@ You can create and configure the application in the Azure Portal at [Entra ID > 
 >didn't find them a priority to implement in the project. However, it could be 
 >done.
 
+## Apps
+
+### API
+The API is built with FastAPI, and it is the backend of the project. API is 
+located in the `api` folder.
+
+#### Requirements
+
+* Python 3.12.0
 
 #### Installation
 
