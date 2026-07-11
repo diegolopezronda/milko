@@ -8,9 +8,9 @@ export default function LoginPage() {
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
         <div className="flex flex-col gap-6">
-          <Card>
+          <Card className="h-100 flex flex-col align-center justify-center">
             <CardHeader className="text-center">
-              <CardTitle className="text-center text-xl">
+              <CardTitle className="text-center text-xl pb-6">
                 <a
                   href="#"
                   className="items-center gap-2 self-center font-medium"
@@ -22,16 +22,10 @@ export default function LoginPage() {
                   />
                 </a>
               </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <FieldGroup>
-                <Field>
-                  <Button type="submit" onClick={handleLogin}>
+                <Button type="submit" onClick={handleLogin}>
                     Login with Microsoft
                   </Button>
-                </Field>
-              </FieldGroup>
-            </CardContent>
+            </CardHeader>
           </Card>
         </div>
       </div>

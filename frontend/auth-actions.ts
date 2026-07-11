@@ -18,8 +18,8 @@ export async function getAuth() {
 export async function hasRoles(roles: string[]) {
   const session = await auth()
   if (session && session.roles) {
-    for (let r in roles) {
-      if (session.roles.includes(r)) {
+    for (let r of roles) {
+      if (session.roles.includes(r) === true) {
         return true
       }
     }
