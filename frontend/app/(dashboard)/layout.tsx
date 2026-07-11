@@ -31,11 +31,12 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const session = await getAuth()
+  const user = session?.user
   const data = {
     user: {
-      name: session?.name || "",
-      email: session?.email || "",
-      avatar: session?.picture || "",
+      name: user?.name || "",
+      email: user?.email || "",
+      avatar: user?.picture || "",
     },
     teams: [
       {

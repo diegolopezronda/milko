@@ -7,30 +7,40 @@ https://next-auth.js.org/getting-started/typescript
 */
 
 declare module "next-auth" {
-  interface Session {
-    name: string | null
-    picture: string
-    email: string | null
+  interface User {
+    name: string
+    email: string
+    picture: string | null
     roles: string[]
-    accessToken?: string
-    user: {
-      roles?: string[]
-    } & DefaultSession["user"]
+    initials: string
+  }
+
+  interface Session {
+    tokenClaims: {
+      exp: number | undefined
+      iat: number | undefined
+      jti: string | undefined
+      sub: string | undefined
+    }
+    accessToken: string
+    user: User & DefaultSession["user"]
   }
 
   interface Profile {
-    name: string | null
-    preferred_username: string | null
+    name: string
+    preferred_username: string
     roles: string[]
   }
 }
 
 declare module "next-auth/jwt" {
+
   interface JWT {
-    name: string | null
-    picture: string
-    email?: string | null
-    roles?: string[]
-    accessToken?: string
+    name: string
+    picture: string | undefined
+    email: string
+    roles: string[]
+    initials: string
+    access_token : string | undefined
   }
 }

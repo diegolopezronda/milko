@@ -18,23 +18,11 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { ChevronsUpDownIcon, BadgeCheckIcon, LogOutIcon } from "lucide-react"
+import { User } from "next-auth"
 import Link from "next/link"
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}) {
+export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar()
-  const user_names = user.name.split(" ")
-  const l = user_names.length
-  const avatar_fallback_text = (
-    user_names[0][0] + (l > 1 ? user_names[l - 1][0] : "")
-  ).toUpperCase()
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -45,8 +33,8 @@ export function NavUser({
             }
           >
             <Avatar>
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarImage src={user.picture || ""} alt={user.name} />
+              <AvatarFallback>{user.name[0]}</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-medium">{user.name}</span>
@@ -64,8 +52,8 @@ export function NavUser({
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar>
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback>{avatar_fallback_text}</AvatarFallback>
+                    <AvatarImage src={user.picture || ""} alt={user.name} />
+                    <AvatarFallback>{user.name[0]}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">{user.name}</span>

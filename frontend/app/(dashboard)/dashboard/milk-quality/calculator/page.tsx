@@ -1,6 +1,8 @@
 "use client"
 import { useEffect, useState, useReducer } from "react"
-import { useForm, SubmitHandler, useWatch } from "react-hook-form"
+import { useForm, SubmitHandler, useWatch, Controller } from "react-hook-form"
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 import { Select, SelectItem } from "@/components/ui/select"
 import { AccessDenied } from "@/components/access-denied"
 import {
@@ -32,7 +34,7 @@ import { hasRoles } from "@/auth-actions"
 export default function Page() {
   const [isAllowed, setAllowed] = useState<boolean | null>(null)
   useEffect(() => {
-    hasRoles(["analyst"]).then((h: boolean | null) => {
+    hasRoles(["analyst","visitor"]).then((h: boolean | null) => {
       setAllowed(h || false)
     })
   }, [])
@@ -47,18 +49,10 @@ export default function Page() {
       max: { value: 100, message: "Must be less than or equal 100." },
       valueAsNumber: true,
     },
-    taste: {
-      valueAsNumber: true,
-    },
-    odor: {
-      valueAsNumber: true,
-    },
-    fat: {
-      valueAsNumber: true,
-    },
-    turbidity: {
-      valueAsNumber: true,
-    },
+    taste: {},
+    odor: {},
+    fat: {},
+    turbidity: {},
     colour: {
       min: { value: 0, message: "Must be greater than or equal zero." },
       max: { value: 255, message: "Must be less than or equal 255." },
@@ -68,24 +62,34 @@ export default function Page() {
 
   const {
     register,
-    handleSubmit,
     control,
-    formState: { errors, isValid },
-  } = useForm<IFormInputs>({
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      ph:7,
+      colour:255,
+      temperature: 37,
+      taste: "false",
+      odor: "false",
+      turbidity: "false",
+      fat: "false",
+    },
     mode: "onChange",
   })
 
+  const [milkQuality, setMilkQuality] = useState<boolean | undefined>(undefined)
+  const [milkColour, setMilkColour] = useState<string>("#FFFFFF")
+  const [formIsVisible, toggleFormIsVisible] = useReducer((state) => {
+    return !state
+  }, true)
+  
   const colourWatch = useWatch({
     control,
     name: "colour",
   })
 
   const defaultColour = 255
-  const [milkQuality, setMilkQuality] = useState<boolean | undefined>(undefined)
-  const [milkColour, setMilkColour] = useState<string>("#FFFFFF")
-  const [formIsVisible, toggleFormIsVisible] = useReducer((state) => {
-    return !state
-  }, true)
 
   useEffect(() => {
     let colour_min = [255, 221, 0]
@@ -98,12 +102,16 @@ export default function Page() {
     })
     setMilkColour(colour)
   }, [colourWatch])
+  
 
   const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
-    console.log(data)
     const quality = await getMilkQuality(data)
-    setMilkQuality(quality)
-    toggleFormIsVisible()
+    if (quality == null) {
+      toast.error("Couldn't get the result. Please try later.")
+    } else {
+      setMilkQuality(quality)
+      toggleFormIsVisible()
+    }
   }
 
   return (
@@ -154,10 +162,10 @@ export default function Page() {
                           {...register("ph", restrictions.ph)}
                         />
                         {errors &&
-                          errors.temperature &&
-                          errors.temperature.message && (
+                          errors.ph &&
+                          errors.ph.message && (
                             <FieldError
-                              errors={[{ message: errors.temperature.message }]}
+                              errors={[{ message: errors.ph.message }]}
                             />
                           )}
                       </Field>
@@ -169,7 +177,6 @@ export default function Page() {
                         </FieldLabel>
                         <InputGroup>
                           <InputGroupInput
-                            defaultValue={25}
                             type="number"
                             step="0.1"
                             aria-invalid={errors.temperature ? "true" : "false"}
@@ -194,7 +201,6 @@ export default function Page() {
                         <FieldLabel htmlFor="colour">Colour</FieldLabel>
                         <InputGroup>
                           <Input
-                            defaultValue={defaultColour}
                             type="number"
                             step="1"
                             aria-invalid={errors.colour ? "true" : "false"}
@@ -214,14 +220,22 @@ export default function Page() {
                     <FieldGroup className="grid grid-cols-4">
                       <Field data-invalid={errors.taste ? "true" : "false"}>
                         <FieldLabel htmlFor="taste">Taste</FieldLabel>
-                        <Select
-                          defaultValue={0}
-                          aria-invalid={errors.taste ? "true" : "false"}
-                          {...register("taste", restrictions.taste)}
-                        >
-                          <SelectItem value={1}>Good</SelectItem>
-                          <SelectItem value={0}>Bad</SelectItem>
-                        </Select>
+                        <Controller
+                          control={control}
+                          name="taste"
+                          rules={restrictions.taste}
+                          render={({ field }) => (
+                            <Select
+                              value={field.value}
+                              // Radix/Shadcn uses onValueChange. If your library uses onChange, swap this out.
+                              onValueChange={field.onChange}
+                              aria-invalid={errors.taste ? "true" : "false"}
+                            >
+                              <SelectItem value="true">High</SelectItem>
+                              <SelectItem value="false">Low</SelectItem>
+                            </Select>
+                          )}
+                        />
                         {errors && errors.taste && errors.taste.message && (
                           <FieldError
                             errors={[{ message: errors.taste.message }]}
@@ -230,14 +244,22 @@ export default function Page() {
                       </Field>
                       <Field data-invalid={errors.odor ? "true" : "false"}>
                         <FieldLabel htmlFor="odor">Odor</FieldLabel>
-                        <Select
-                          defaultValue={0}
-                          aria-invalid={errors.odor ? "true" : "false"}
-                          {...register("odor", restrictions.odor)}
-                        >
-                          <SelectItem value={1}>Good</SelectItem>
-                          <SelectItem value={0}>Bad</SelectItem>
-                        </Select>
+                        <Controller
+                          control={control}
+                          name="odor"
+                          rules={restrictions.odor}
+                          render={({ field }) => (
+                            <Select
+                              value={field.value}
+                              // Radix/Shadcn uses onValueChange. If your library uses onChange, swap this out.
+                              onValueChange={field.onChange}
+                              aria-invalid={errors.odor ? "true" : "false"}
+                            >
+                              <SelectItem value="true">High</SelectItem>
+                              <SelectItem value="false">Low</SelectItem>
+                            </Select>
+                          )}
+                        />
                         {errors && errors.odor && errors.odor.message && (
                           <FieldError
                             errors={[{ message: errors.odor.message }]}
@@ -246,14 +268,22 @@ export default function Page() {
                       </Field>
                       <Field data-invalid={errors.fat ? "true" : "false"}>
                         <FieldLabel htmlFor="fat">Fat</FieldLabel>
-                        <Select
-                          defaultValue={0}
-                          aria-invalid={errors.fat ? "true" : "false"}
-                          {...register("fat", restrictions.fat)}
-                        >
-                          <SelectItem value={1}>High</SelectItem>
-                          <SelectItem value={0}>Low</SelectItem>
-                        </Select>
+                        <Controller
+                          control={control}
+                          name="fat"
+                          rules={restrictions.fat}
+                          render={({ field }) => (
+                            <Select
+                              value={field.value}
+                              // Radix/Shadcn uses onValueChange. If your library uses onChange, swap this out.
+                              onValueChange={field.onChange}
+                              aria-invalid={errors.fat ? "true" : "false"}
+                            >
+                              <SelectItem value="true">High</SelectItem>
+                              <SelectItem value="false">Low</SelectItem>
+                            </Select>
+                          )}
+                        />
                         {errors && errors.fat && errors.fat.message && (
                           <FieldError
                             errors={[{ message: errors.fat.message }]}
@@ -262,14 +292,22 @@ export default function Page() {
                       </Field>
                       <Field data-invalid={errors.turbidity ? "true" : "false"}>
                         <FieldLabel htmlFor="turbidity">Turbidity</FieldLabel>
-                        <Select
-                          defaultValue={0}
-                          aria-invalid={errors.turbidity ? "true" : "false"}
-                          {...register("turbidity", restrictions.turbidity)}
-                        >
-                          <SelectItem value={1}>High</SelectItem>
-                          <SelectItem value={0}>Low</SelectItem>
-                        </Select>
+                        <Controller
+                          control={control}
+                          name="turbidity"
+                          rules={restrictions.turbidity}
+                          render={({ field }) => (
+                            <Select
+                              value={field.value}
+                              // Radix/Shadcn uses onValueChange. If your library uses onChange, swap this out.
+                              onValueChange={field.onChange}
+                              aria-invalid={errors.turbidity ? "true" : "false"}
+                            >
+                              <SelectItem value="true">High</SelectItem>
+                              <SelectItem value="false">Low</SelectItem>
+                            </Select>
+                          )}
+                        />
                         {errors &&
                           errors.turbidity &&
                           errors.turbidity.message && (
@@ -318,6 +356,7 @@ export default function Page() {
           </Card>
         </div>
       </AccessDenied>
+      <Toaster />
     </>
   )
 }
