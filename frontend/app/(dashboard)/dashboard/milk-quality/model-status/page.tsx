@@ -7,7 +7,7 @@ import { NotAvailable } from "@/components/not-available"
 export default function Page() {
   const [isAllowed, setAllowed] = useState<boolean | null>(null)
   useEffect(() => {
-    hasRoles(["analyst"]).then((h: boolean | null) => {
+    hasRoles(["analyst","visitor"]).then((h: boolean | null) => {
       setAllowed(h || false)
     })
   }, [])

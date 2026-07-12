@@ -34,7 +34,7 @@ import { hasRoles } from "@/auth-actions"
 export default function Page() {
   const [isAllowed, setAllowed] = useState<boolean | null>(null)
   useEffect(() => {
-    hasRoles(["analyst","visitor"]).then((h: boolean | null) => {
+    hasRoles(["analyst"]).then((h: boolean | null) => {
       setAllowed(h || false)
     })
   }, [])
@@ -67,8 +67,8 @@ export default function Page() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      ph:7,
-      colour:255,
+      ph: 7,
+      colour: 255,
       temperature: 37,
       taste: "false",
       odor: "false",
@@ -83,7 +83,7 @@ export default function Page() {
   const [formIsVisible, toggleFormIsVisible] = useReducer((state) => {
     return !state
   }, true)
-  
+
   const colourWatch = useWatch({
     control,
     name: "colour",
@@ -102,7 +102,6 @@ export default function Page() {
     })
     setMilkColour(colour)
   }, [colourWatch])
-  
 
   const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
     const quality = await getMilkQuality(data)
@@ -136,7 +135,7 @@ export default function Page() {
               </p>
             </CardContent>
           </Card>
-          <Card className="col-span-2">
+          <Card className="col-span-2 flex flex-col">
             <CardHeader>
               <CardTitle>Milk quality calculator</CardTitle>
               <CardDescription>
@@ -145,13 +144,12 @@ export default function Page() {
             </CardHeader>
             {formIsVisible && (
               <>
-                <CardContent>
+                <CardContent className="flex-1">
                   <form
                     id="milk-quality-calculator"
-                    className="mx-auto max-w-4xl space-y-6 rounded-xl border bg-card p-6 text-card-foreground"
                     onSubmit={handleSubmit(onSubmit)}
                   >
-                    <FieldGroup className="grid grid-cols-3">
+                    <FieldGroup className="grid grid-cols-3 pb-4">
                       <Field data-invalid={errors.ph ? "true" : "false"}>
                         <FieldLabel htmlFor="ph">pH</FieldLabel>
                         <Input
@@ -161,13 +159,11 @@ export default function Page() {
                           aria-invalid={errors.ph ? "true" : "false"}
                           {...register("ph", restrictions.ph)}
                         />
-                        {errors &&
-                          errors.ph &&
-                          errors.ph.message && (
-                            <FieldError
-                              errors={[{ message: errors.ph.message }]}
-                            />
-                          )}
+                        {errors && errors.ph && errors.ph.message && (
+                          <FieldError
+                            errors={[{ message: errors.ph.message }]}
+                          />
+                        )}
                       </Field>
                       <Field
                         data-invalid={errors.temperature ? "true" : "false"}
@@ -217,7 +213,7 @@ export default function Page() {
                         )}
                       </Field>
                     </FieldGroup>
-                    <FieldGroup className="grid grid-cols-4">
+                    <FieldGroup className="grid grid-cols-4 pb-4">
                       <Field data-invalid={errors.taste ? "true" : "false"}>
                         <FieldLabel htmlFor="taste">Taste</FieldLabel>
                         <Controller
